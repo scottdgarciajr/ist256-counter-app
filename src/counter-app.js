@@ -69,6 +69,22 @@ export class counterApp extends DDDSuper(LitElement) {
     return new URL(`./lib/${this.tag}.haxProperties.json`, import.meta.url)
       .href;
   }
+
+  _incrementNum(event) {
+    if (this.num < (this.max)) {
+      this.num++;
+    }
+  }
+  _decrementNum(event) {
+    if (this.num > (this.min)) {
+      this.num++;
+    }
+  }
+
+
+
 }
+
+
 
 globalThis.customElements.define(counterApp.tag, counterApp);
