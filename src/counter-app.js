@@ -79,7 +79,8 @@ export class counterApp extends DDDSuper(LitElement) {
       }
 
       button:hover {
-        background-color: var(--ddd-theme-secondary); 
+        background-color: var(--ddd-theme-secondary);
+        color: green; 
       }
 
       button:focus {
