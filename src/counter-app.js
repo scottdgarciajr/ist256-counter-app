@@ -32,9 +32,9 @@ export class counterApp extends DDDSuper(LitElement) {
         color: var(--ddd-theme-primary);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
-        padding: 16px; /* Spacing around the app */
-        border-radius: 8px; /* Rounded corners */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+        padding: 16px; 
+        border-radius: 8px; 
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
       }
 
       :host([counter="21"]) #counter {
@@ -42,7 +42,7 @@ export class counterApp extends DDDSuper(LitElement) {
       }
 
       :host([counter="18"]) #counter {
-        color: pink; 
+        color: yellow; 
       }
 
       .minmax {
@@ -50,20 +50,20 @@ export class counterApp extends DDDSuper(LitElement) {
       }
 
       .wrapper {
-        text-align: center; /* Center align content */
+        text-align: center; 
       }
 
       .container {
         display: flex;
-        justify-content: center; /* Center buttons and counter */
+        justify-content: center; 
         align-items: center;
-        margin-top: 16px; /* Space above the container */
+        margin-top: 16px; 
       }
 
       .number {
-        font-size: 4rem; /* Large font size for the number */
-        margin: 0 16px; /* Spacing around the number */
-        font-weight: bold; /* Bold text for emphasis */
+        font-size: 4rem; 
+        margin: 0 16px; 
+        font-weight: bold; 
       }
 
       button {
@@ -71,29 +71,29 @@ export class counterApp extends DDDSuper(LitElement) {
         color: white;
         border: none;
         border-radius: 4px;
-        padding: 8px 16px; /* Spacing inside buttons */
-        margin: 0 8px; /* Space between buttons */
-        cursor: pointer; /* Pointer on hover */
-        font-size: 1.5rem; /* Button font size */
-        transition: background-color 0.3s, transform 0.2s; /* Transition effects */
+        padding: 8px 16px; 
+        margin: 0 8px; 
+        cursor: pointer;
+        font-size: 1.5rem; 
+        transition: background-color 0.3s, transform 0.2s; 
       }
 
       button:hover {
-        background-color: var(--ddd-theme-secondary); /* Change on hover */
+        background-color: var(--ddd-theme-secondary); 
       }
 
       button:focus {
-        outline: 2px solid var(--ddd-theme-secondary); /* Outline on focus */
+        outline: 2px solid var(--ddd-theme-secondary); 
       }
 
-      /* Optional: Responsive button styles */
+      
       @media (max-width: 600px) {
         .number {
-          font-size: 2.5rem; /* Adjust font size for smaller screens */
+          font-size: 2.5rem; 
         }
         button {
-          font-size: 1rem; /* Adjust button font size for smaller screens */
-          padding: 4px 8px; /* Adjust button padding for smaller screens */
+          font-size: 1rem; 
+          padding: 4px 8px; 
         }
       }
     `];
@@ -101,6 +101,7 @@ export class counterApp extends DDDSuper(LitElement) {
 
   render() {
     return html`
+    <confetti-container id="confetti">
       <div class="wrapper">
         <div>${this.title}</div>
 
@@ -112,6 +113,7 @@ export class counterApp extends DDDSuper(LitElement) {
 
         <slot></slot>
       </div>
+    </confetti-container>
     `;
   }
 
@@ -154,6 +156,35 @@ export class counterApp extends DDDSuper(LitElement) {
     //console.log("target" + target);
     target.classList.toggle('minmax');
   }
+
+  updated(changedProperties) {
+    if (changedProperties.has('counter')) {
+      if (this.counter==21){this.makeItRain();}
+    }
+  }
+  
+  makeItRain() {
+    // this is called a dynamic import. It means it won't import the code for confetti until this method is called
+    // the .then() syntax after is because dynamic imports return a Promise object. Meaning the then() code
+    // will only run AFTER the code is imported and available to us
+    import("@haxtheweb/multiple-choice/lib/confetti-container.js").then(
+      (module) => {
+        // This is a minor timing 'hack'. We know the code library above will import prior to this running
+        // The "set timeout 0" means "wait 1 microtask and run it on the next cycle.
+        // this "hack" ensures the element has had time to process in the DOM so that when we set popped
+        // it's listening for changes so it can react
+        setTimeout(() => {
+          // forcibly set the poppped attribute on something with id confetti
+          // while I've said in general NOT to do this, the confetti container element will reset this
+          // after the animation runs so it's a simple way to generate the effect over and over again
+          this.shadowRoot.querySelector("#confetti").setAttribute("popped", "");
+        }, 0);
+      }
+    );
+  }
+
+
+
 }
 
 globalThis.customElements.define(counterApp.tag, counterApp);
