@@ -11,7 +11,7 @@ export class counterApp extends DDDSuper(LitElement) {
     super();
     this.title = "Number Counter";
     this.min = 0;
-    this.min = 10;
+    this.max = 10;
     this.num = 5;
   }
 
@@ -53,9 +53,9 @@ export class counterApp extends DDDSuper(LitElement) {
   
 
   <div class = "container">
-    <button>+</button>
+    <button class="increment" @click="${this._incrementNum}">+</button>
     <div>${this.num}</div>
-    <button>-</button>
+    <button button class="decrement" @click="${this._decrementNum}">-</button>
   </div>
 
   <slot></slot>
@@ -71,14 +71,20 @@ export class counterApp extends DDDSuper(LitElement) {
   }
 
   _incrementNum(event) {
+    console.log("increment clicked")
     if (this.num < (this.max)) {
       this.num++;
+      
     }
+    console.log(this.num)
   }
   _decrementNum(event) {
+    console.log("decrement clicked")
     if (this.num > (this.min)) {
-      this.num++;
+      this.num--;
+      
     }
+    console.log(this.num)
   }
 
 
