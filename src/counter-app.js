@@ -125,10 +125,14 @@ export class counterApp extends DDDSuper(LitElement) {
     else if (this.counter == this.max-1){
       this.toggleCounterStyle();
       this.counter++;
+      const incrementButton = this.shadowRoot.querySelector('.increment');//unecessary, but added to meet homework requirements
+      incrementButton.disabled = true;//unecessary, but added to meet homework requirements
     }
     else if (this.counter == (this.min)){
       this.toggleCounterStyle();
       this.counter++;
+      const incrementButton = this.shadowRoot.querySelector('.increment');//unecessary, but added to meet homework requirements
+      incrementButton.disabled = false;//unecessary, but added to meet homework requirements
     }
     //console.log(this.counter);
   }
@@ -141,10 +145,14 @@ export class counterApp extends DDDSuper(LitElement) {
     else if (this.counter == this.min+1){
       this.counter--;
       this.toggleCounterStyle();
+      const decrementButton = this.shadowRoot.querySelector('.decrement');
+      decrementButton.disabled = true;
     }
     else if (this.counter == (this.max)){
       this.toggleCounterStyle();
       this.counter--;
+      const decrementButton = this.shadowRoot.querySelector('.decrement');
+      decrementButton.disabled = false;
     }
     //console.log(this.counter);
     
